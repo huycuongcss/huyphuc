@@ -19,24 +19,24 @@ def main():
 body {
     margin: 0;
     padding: 10px;
-    background: #f5f5f5;
     font-family: Arial, sans-serif;
     text-align: center;
+    background: #f5f5f5;
 }
 
 h1 {
-    margin: 5px 0 10px 0;
+    margin: 5px 0;
     color: #1b5e20;
 }
 
 .info {
     font-size: 18px;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin: 8px;
 }
 
 #message {
-    min-height: 60px;
+    height: 65px;
     font-size: 20px;
     font-weight: bold;
     margin: 5px;
@@ -50,8 +50,12 @@ h1 {
     border: 5px solid #333;
 
     display: grid;
-    grid-template-columns: repeat(20, 1fr);
-    grid-template-rows: repeat(20, 1fr);
+
+    grid-template-columns:
+        repeat(20, 1fr);
+
+    grid-template-rows:
+        repeat(20, 1fr);
 }
 
 .cell {
@@ -118,23 +122,25 @@ button {
 
 <div class="info">
 
-    Điểm:
-    <span id="score">0</span>
+Điểm:
+<span id="score">0</span>
 
-    &nbsp;&nbsp;
+&nbsp;&nbsp;
 
-    Độ dài:
-    <span id="length">3</span>
+Độ dài:
+<span id="length">3</span>
 
-    &nbsp;&nbsp;
+&nbsp;&nbsp;
 
-    Tốc độ:
-    <span id="speed">5</span>
+Tốc độ:
+<span id="speed">0</span>
 
 </div>
 
 
-<div id="message"></div>
+<div id="message">
+▶️ Bấm phím mũi tên để bắt đầu
+</div>
 
 
 <div id="game"></div>
@@ -143,11 +149,13 @@ button {
 <div class="controls">
 
     <div>
+
         <button
             class="direction"
             id="up">
             ⬆️
         </button>
+
     </div>
 
 
@@ -195,9 +203,11 @@ button {
 
 <div class="help">
 
-    💻 Máy tính: dùng phím mũi tên<br>
-    📱 Điện thoại: bấm các nút điều khiển<br>
-    ⏸️ Phím Space: tạm dừng
+💻 Máy tính: dùng phím mũi tên<br>
+
+📱 Điện thoại: bấm các nút<br>
+
+⏸️ Phím Space: tạm dừng
 
 </div>
 
@@ -205,20 +215,20 @@ button {
 <script>
 
 
-// ==========================================
+// ========================================
 // CÀI ĐẶT
-// ==========================================
+// ========================================
 
 const SIZE = 20;
 
-const START_SPEED = 200;
+const START_SPEED = 350;
 
-const MIN_SPEED = 60;
+const MIN_SPEED = 100;
 
 
-// ==========================================
-// BIẾN GAME
-// ==========================================
+// ========================================
+// BIẾN
+// ========================================
 
 let snake;
 
@@ -239,9 +249,9 @@ let running;
 let paused;
 
 
-// ==========================================
-// KHỞI ĐỘNG GAME
-// ==========================================
+// ========================================
+// TẠO GAME
+// ========================================
 
 function startGame() {
 
@@ -251,35 +261,35 @@ function startGame() {
         [8, 10]
     ];
 
-    direction = "RIGHT";
-
-    nextDirection = "RIGHT";
-
-    score = 0;
-
-    speed = START_SPEED;
-
-    running = true;
-
-    paused = false;
 
     food = createFood();
 
 
-    document.getElementById("message").innerHTML = "";
+    direction = null;
+
+    nextDirection = null;
 
 
-    document.getElementById("pause").innerText =
-        "⏸️ Tạm dừng";
+    score = 0;
+
+
+    speed = START_SPEED;
+
+
+    running = false;
+
+    paused = false;
 
 
     clearInterval(timer);
 
 
-    timer = setInterval(
-        gameLoop,
-        speed
-    );
+    document.getElementById("message").innerHTML =
+        "▶️ Bấm phím mũi tên để bắt đầu";
+
+
+    document.getElementById("pause").innerText =
+        "⏸️ Tạm dừng";
 
 
     draw();
@@ -288,13 +298,14 @@ function startGame() {
 }
 
 
-// ==========================================
+// ========================================
 // TẠO MỒI
-// ==========================================
+// ========================================
 
 function createFood() {
 
     let position;
+
 
     do {
 
@@ -310,7 +321,9 @@ function createFood() {
 
         ];
 
-    } while (
+    }
+
+    while (
 
         snake.some(
 
@@ -328,13 +341,46 @@ function createFood() {
 }
 
 
-// ==========================================
-// GAME LOOP
-// ==========================================
+// ========================================
+// BẮT ĐẦU CHẠY
+// ========================================
+
+function startMoving(newDirection) {
+
+    direction = newDirection;
+
+    nextDirection = newDirection;
+
+    running = true;
+
+    paused = false;
+
+
+    document.getElementById("message").innerHTML =
+        "🐍 Đang chơi";
+
+
+    clearInterval(timer);
+
+
+    timer = setInterval(
+        gameLoop,
+        speed
+    );
+
+
+    updateInfo();
+}
+
+
+// ========================================
+// VÒNG LẶP GAME
+// ========================================
 
 function gameLoop() {
 
     if (!running || paused) {
+
         return;
     }
 
@@ -343,31 +389,45 @@ function gameLoop() {
 
 
     let head = [
+
         snake[0][0],
+
         snake[0][1]
+
     ];
 
 
     if (direction === "UP") {
+
         head[1]--;
+
     }
+
 
     if (direction === "DOWN") {
+
         head[1]++;
+
     }
+
 
     if (direction === "LEFT") {
+
         head[0]--;
+
     }
+
 
     if (direction === "RIGHT") {
+
         head[0]++;
+
     }
 
 
-    // ======================================
+    // ====================================
     // ĐỤNG TƯỜNG
-    // ======================================
+    // ====================================
 
     if (
 
@@ -387,9 +447,9 @@ function gameLoop() {
     }
 
 
-    // ======================================
+    // ====================================
     // ĐỤNG THÂN
-    // ======================================
+    // ====================================
 
     if (
 
@@ -410,14 +470,12 @@ function gameLoop() {
     }
 
 
-    // Thêm đầu mới
-
     snake.unshift(head);
 
 
-    // ======================================
+    // ====================================
     // ĂN MỒI
-    // ======================================
+    // ====================================
 
     if (
 
@@ -432,11 +490,9 @@ function gameLoop() {
         food = createFood();
 
 
-        // Tăng tốc
-
         if (speed > MIN_SPEED) {
 
-            speed -= 10;
+            speed -= 15;
 
         }
 
@@ -450,10 +506,9 @@ function gameLoop() {
         );
 
 
-    } else {
+    }
 
-        // Không ăn mồi
-        // thì bỏ đuôi
+    else {
 
         snake.pop();
 
@@ -466,9 +521,9 @@ function gameLoop() {
 }
 
 
-// ==========================================
+// ========================================
 // VẼ GAME
-// ==========================================
+// ========================================
 
 function draw() {
 
@@ -476,15 +531,10 @@ function draw() {
         document.getElementById("game");
 
 
-    // Chỉ xóa các ô trong bảng game
-    // Không đụng đến nút Chơi lại
-
     board.innerHTML = "";
 
 
-    // ======================================
-    // VẼ RẮN
-    // ======================================
+    // RẮN
 
     snake.forEach(
 
@@ -496,10 +546,15 @@ function draw() {
 
             cell.className =
                 "cell " +
+
                 (
+
                     index === 0
+
                     ? "head"
+
                     : "snake"
+
                 );
 
 
@@ -518,9 +573,7 @@ function draw() {
     );
 
 
-    // ======================================
-    // VẼ MỒI
-    // ======================================
+    // MỒI
 
     const foodCell =
         document.createElement("div");
@@ -542,9 +595,9 @@ function draw() {
 }
 
 
-// ==========================================
-// CẬP NHẬT THÔNG TIN
-// ==========================================
+// ========================================
+// THÔNG TIN
+// ========================================
 
 function updateInfo() {
 
@@ -556,15 +609,26 @@ function updateInfo() {
         .innerText = snake.length;
 
 
-    document.getElementById("speed")
-        .innerText =
-        Math.round(1000 / speed);
+    if (running) {
+
+        document.getElementById("speed")
+            .innerText =
+            Math.round(1000 / speed);
+
+    }
+
+    else {
+
+        document.getElementById("speed")
+            .innerText = 0;
+
+    }
 }
 
 
-// ==========================================
+// ========================================
 // GAME OVER
-// ==========================================
+// ========================================
 
 function gameOver() {
 
@@ -612,20 +676,36 @@ function gameOver() {
 
         "💥 GAME OVER!<br>" +
 
-        "Điểm: " + score + "<br>" +
-
+        "Điểm: " + score +
+        " - " +
         ranking;
 
 
-    // Nút Chơi lại KHÔNG bị xóa
+    document.getElementById("pause")
+        .innerText =
+        "⏸️ Tạm dừng";
+
+
+    updateInfo();
 }
 
 
-// ==========================================
+// ========================================
 // ĐỔI HƯỚNG
-// ==========================================
+// ========================================
 
 function changeDirection(newDirection) {
+
+
+    // Nếu game chưa chạy
+    // thì bắt đầu luôn
+
+    if (!running) {
+
+        startMoving(newDirection);
+
+        return;
+    }
 
 
     if (
@@ -681,14 +761,12 @@ function changeDirection(newDirection) {
 }
 
 
-// ==========================================
-// BÀN PHÍM MŨI TÊN
-// ==========================================
+// ========================================
+// PHÍM MŨI TÊN
+// ========================================
 
 document.addEventListener(
-
     "keydown",
-
     function(event) {
 
 
@@ -737,13 +815,12 @@ document.addEventListener(
         }
 
     }
-
 );
 
 
-// ==========================================
+// ========================================
 // NÚT ĐIỀU KHIỂN
-// ==========================================
+// ========================================
 
 document.getElementById("up")
     .onclick = function() {
@@ -777,9 +854,9 @@ document.getElementById("right")
     };
 
 
-// ==========================================
+// ========================================
 // TẠM DỪNG
-// ==========================================
+// ========================================
 
 function togglePause() {
 
@@ -787,21 +864,35 @@ function togglePause() {
     if (!running) {
 
         return;
-
     }
 
 
     paused = !paused;
 
 
-    document.getElementById("pause")
-        .innerText =
+    if (paused) {
 
-        paused
+        document.getElementById("pause")
+            .innerText =
+            "▶️ Tiếp tục";
 
-        ? "▶️ Tiếp tục"
+        document.getElementById("message")
+            .innerHTML =
+            "⏸️ ĐANG TẠM DỪNG";
 
-        : "⏸️ Tạm dừng";
+    }
+
+    else {
+
+        document.getElementById("pause")
+            .innerText =
+            "⏸️ Tạm dừng";
+
+        document.getElementById("message")
+            .innerHTML =
+            "🐍 Đang chơi";
+
+    }
 }
 
 
@@ -809,9 +900,9 @@ document.getElementById("pause")
     .onclick = togglePause;
 
 
-// ==========================================
-// CHƠI LẠI
-// ==========================================
+// ========================================
+// NÚT CHƠI LẠI
+// ========================================
 
 document.getElementById("restart")
     .onclick = function() {
@@ -821,9 +912,9 @@ document.getElementById("restart")
     };
 
 
-// ==========================================
-// BẮT ĐẦU GAME
-// ==========================================
+// ========================================
+// KHỞI ĐỘNG
+// ========================================
 
 startGame();
 
@@ -835,20 +926,12 @@ startGame();
 '''
 
 
-    # ==========================================
-    # HIỂN THỊ GAME
-    # ==========================================
-
     st.components.v1.html(
         game,
-        height=760,
+        height=780,
         scrolling=False
     )
 
-
-# ==============================================
-# CHẠY
-# ==============================================
 
 if __name__ == "__main__":
     main()
