@@ -3,6 +3,8 @@ import streamlit as st
 
 def main():
 
+    st.success("🐍 RẮN SĂN MỒI - BẢN MỚI")
+
     game = r'''
 <!DOCTYPE html>
 <html>
