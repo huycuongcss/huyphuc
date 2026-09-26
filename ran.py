@@ -12,20 +12,16 @@ def main():
 
 <style>
 
-* {
-    box-sizing: border-box;
-}
-
 body {
     margin: 0;
     padding: 10px;
-    font-family: Arial, sans-serif;
+    font-family: Arial;
     text-align: center;
     background: #f5f5f5;
 }
 
 h1 {
-    margin: 5px 0;
+    margin: 5px;
     color: #1b5e20;
 }
 
@@ -36,10 +32,9 @@ h1 {
 }
 
 #message {
-    height: 65px;
+    height: 55px;
     font-size: 20px;
     font-weight: bold;
-    margin: 5px;
 }
 
 #game {
@@ -72,12 +67,8 @@ h1 {
 }
 
 .food {
-    background: #ff1744;
+    background: red;
     border-radius: 50%;
-}
-
-.controls {
-    margin-top: 10px;
 }
 
 button {
@@ -86,16 +77,10 @@ button {
     padding: 10px 18px;
     margin: 4px;
     font-size: 20px;
-    cursor: pointer;
 }
 
 .direction {
     background: #2196f3;
-    color: white;
-}
-
-.pause {
-    background: #ff9800;
     color: white;
 }
 
@@ -104,10 +89,9 @@ button {
     color: white;
 }
 
-.help {
-    font-size: 14px;
-    color: #555;
-    margin-top: 8px;
+.pause {
+    background: #ff9800;
+    color: white;
 }
 
 </style>
@@ -116,6 +100,7 @@ button {
 
 
 <body>
+
 
 <h1>🐍 RẮN SĂN MỒI</h1>
 
@@ -138,97 +123,109 @@ Tốc độ:
 </div>
 
 
+<!-- NÚT CHƠI LẠI ĐẶT Ở TRÊN -->
+
+<div>
+
+<button
+class="restart"
+id="restart">
+
+🔄 CHƠI LẠI
+
+</button>
+
+<button
+class="pause"
+id="pause">
+
+⏸️ TẠM DỪNG
+
+</button>
+
+</div>
+
+
 <div id="message">
+
 ▶️ Bấm phím mũi tên để bắt đầu
+
 </div>
 
 
 <div id="game"></div>
 
 
-<div class="controls">
+<!-- NÚT ĐIỀU KHIỂN -->
 
-    <div>
+<div>
 
-        <button
-            class="direction"
-            id="up">
-            ⬆️
-        </button>
+<button
+class="direction"
+id="up">
 
-    </div>
+⬆️
 
-
-    <div>
-
-        <button
-            class="direction"
-            id="left">
-            ⬅️
-        </button>
-
-        <button
-            class="direction"
-            id="down">
-            ⬇️
-        </button>
-
-        <button
-            class="direction"
-            id="right">
-            ➡️
-        </button>
-
-    </div>
-
-
-    <div>
-
-        <button
-            class="pause"
-            id="pause">
-            ⏸️ Tạm dừng
-        </button>
-
-        <button
-            class="restart"
-            id="restart">
-            🔄 Chơi lại
-        </button>
-
-    </div>
+</button>
 
 </div>
 
 
-<div class="help">
+<div>
+
+<button
+class="direction"
+id="left">
+
+⬅️
+
+</button>
+
+<button
+class="direction"
+id="down">
+
+⬇️
+
+</button>
+
+<button
+class="direction"
+id="right">
+
+➡️
+
+</button>
+
+</div>
+
+
+<p>
 
 💻 Máy tính: dùng phím mũi tên<br>
 
-📱 Điện thoại: bấm các nút<br>
+📱 Điện thoại: dùng các nút bên trên
 
-⏸️ Phím Space: tạm dừng
-
-</div>
+</p>
 
 
 <script>
 
 
-// ========================================
+// ===============================
 // CÀI ĐẶT
-// ========================================
+// ===============================
 
 const SIZE = 20;
 
-const START_SPEED = 350;
+const START_SPEED = 300;
 
-const MIN_SPEED = 100;
+const MIN_SPEED = 80;
 
 
-// ========================================
-// BIẾN
-// ========================================
+// ===============================
+// BIẾN GAME
+// ===============================
 
 let snake;
 
@@ -249,16 +246,23 @@ let running;
 let paused;
 
 
-// ========================================
-// TẠO GAME
-// ========================================
+// ===============================
+// KHỞI TẠO
+// ===============================
 
-function startGame() {
+function resetGame() {
+
+    clearInterval(timer);
+
 
     snake = [
+
         [10, 10],
+
         [9, 10],
+
         [8, 10]
+
     ];
 
 
@@ -272,7 +276,6 @@ function startGame() {
 
     score = 0;
 
-
     speed = START_SPEED;
 
 
@@ -281,15 +284,14 @@ function startGame() {
     paused = false;
 
 
-    clearInterval(timer);
+    document.getElementById("message").innerText =
 
-
-    document.getElementById("message").innerHTML =
         "▶️ Bấm phím mũi tên để bắt đầu";
 
 
     document.getElementById("pause").innerText =
-        "⏸️ Tạm dừng";
+
+        "⏸️ TẠM DỪNG";
 
 
     draw();
@@ -298,54 +300,60 @@ function startGame() {
 }
 
 
-// ========================================
+// ===============================
 // TẠO MỒI
-// ========================================
+// ===============================
 
 function createFood() {
 
-    let position;
+    let x;
+
+    let y;
+
+    let ok;
 
 
     do {
 
-        position = [
-
+        x =
             Math.floor(
                 Math.random() * SIZE
-            ),
+            );
 
+        y =
             Math.floor(
                 Math.random() * SIZE
-            )
-
-        ];
-
-    }
-
-    while (
-
-        snake.some(
-
-            part =>
-
-            part[0] === position[0] &&
-            part[1] === position[1]
-
-        )
-
-    );
+            );
 
 
-    return position;
+        ok = true;
+
+
+        for (let part of snake) {
+
+            if (
+                part[0] === x &&
+                part[1] === y
+            ) {
+
+                ok = false;
+
+            }
+
+        }
+
+    } while (!ok);
+
+
+    return [x, y];
 }
 
 
-// ========================================
-// BẮT ĐẦU CHẠY
-// ========================================
+// ===============================
+// BẮT ĐẦU
+// ===============================
 
-function startMoving(newDirection) {
+function startGame(newDirection) {
 
     direction = newDirection;
 
@@ -356,16 +364,20 @@ function startMoving(newDirection) {
     paused = false;
 
 
-    document.getElementById("message").innerHTML =
-        "🐍 Đang chơi";
+    document.getElementById("message").innerText =
+
+        "🐍 ĐANG CHƠI";
 
 
     clearInterval(timer);
 
 
     timer = setInterval(
+
         gameLoop,
+
         speed
+
     );
 
 
@@ -373,15 +385,23 @@ function startMoving(newDirection) {
 }
 
 
-// ========================================
-// VÒNG LẶP GAME
-// ========================================
+// ===============================
+// GAME LOOP
+// ===============================
 
 function gameLoop() {
 
-    if (!running || paused) {
+    if (!running) {
 
         return;
+
+    }
+
+
+    if (paused) {
+
+        return;
+
     }
 
 
@@ -425,9 +445,7 @@ function gameLoop() {
     }
 
 
-    // ====================================
     // ĐỤNG TƯỜNG
-    // ====================================
 
     if (
 
@@ -444,42 +462,40 @@ function gameLoop() {
         gameOver();
 
         return;
+
     }
 
 
-    // ====================================
     // ĐỤNG THÂN
-    // ====================================
 
-    if (
+    for (let part of snake) {
 
-        snake.some(
-
-            part =>
+        if (
 
             part[0] === head[0] &&
+
             part[1] === head[1]
 
-        )
+        ) {
 
-    ) {
+            gameOver();
 
-        gameOver();
+            return;
 
-        return;
+        }
+
     }
 
 
     snake.unshift(head);
 
 
-    // ====================================
     // ĂN MỒI
-    // ====================================
 
     if (
 
         head[0] === food[0] &&
+
         head[1] === food[1]
 
     ) {
@@ -501,10 +517,12 @@ function gameLoop() {
 
 
         timer = setInterval(
-            gameLoop,
-            speed
-        );
 
+            gameLoop,
+
+            speed
+
+        );
 
     }
 
@@ -521,13 +539,14 @@ function gameLoop() {
 }
 
 
-// ========================================
+// ===============================
 // VẼ GAME
-// ========================================
+// ===============================
 
 function draw() {
 
-    const board =
+    let board =
+
         document.getElementById("game");
 
 
@@ -536,46 +555,55 @@ function draw() {
 
     // RẮN
 
-    snake.forEach(
+    for (
 
-        function(part, index) {
+        let i = 0;
 
-            const cell =
-                document.createElement("div");
+        i < snake.length;
 
+        i++
+
+    ) {
+
+        let cell =
+
+            document.createElement("div");
+
+
+        if (i === 0) {
 
             cell.className =
-                "cell " +
-
-                (
-
-                    index === 0
-
-                    ? "head"
-
-                    : "snake"
-
-                );
-
-
-            cell.style.gridColumn =
-                part[0] + 1;
-
-
-            cell.style.gridRow =
-                part[1] + 1;
-
-
-            board.appendChild(cell);
+                "cell head";
 
         }
 
-    );
+        else {
+
+            cell.className =
+                "cell snake";
+
+        }
+
+
+        cell.style.gridColumn =
+
+            snake[i][0] + 1;
+
+
+        cell.style.gridRow =
+
+            snake[i][1] + 1;
+
+
+        board.appendChild(cell);
+
+    }
 
 
     // MỒI
 
-    const foodCell =
+    let foodCell =
+
         document.createElement("div");
 
 
@@ -584,10 +612,12 @@ function draw() {
 
 
     foodCell.style.gridColumn =
+
         food[0] + 1;
 
 
     foodCell.style.gridRow =
+
         food[1] + 1;
 
 
@@ -595,9 +625,9 @@ function draw() {
 }
 
 
-// ========================================
+// ===============================
 // THÔNG TIN
-// ========================================
+// ===============================
 
 function updateInfo() {
 
@@ -613,7 +643,10 @@ function updateInfo() {
 
         document.getElementById("speed")
             .innerText =
-            Math.round(1000 / speed);
+
+            Math.round(
+                1000 / speed
+            );
 
     }
 
@@ -626,9 +659,9 @@ function updateInfo() {
 }
 
 
-// ========================================
+// ===============================
 // GAME OVER
-// ========================================
+// ===============================
 
 function gameOver() {
 
@@ -640,71 +673,71 @@ function gameOver() {
     clearInterval(timer);
 
 
-    let ranking;
+    let danhGia;
 
 
     if (score < 50) {
 
-        ranking =
+        danhGia =
             "😅 GÀ MỚI TẬP CHƠI";
 
     }
 
     else if (score < 100) {
 
-        ranking =
+        danhGia =
             "👍 KHÁ";
 
     }
 
     else if (score < 200) {
 
-        ranking =
+        danhGia =
             "🔥 GIỎI";
 
     }
 
     else {
 
-        ranking =
-            "👑 CAO THỦ RẮN SĂN MỒI";
+        danhGia =
+            "👑 CAO THỦ";
 
     }
 
 
-    document.getElementById("message").innerHTML =
+    document.getElementById("message").innerText =
 
-        "💥 GAME OVER!<br>" +
+        "💥 GAME OVER!   " +
 
-        "Điểm: " + score +
-        " - " +
-        ranking;
+        "Điểm: " +
 
+        score +
 
-    document.getElementById("pause")
-        .innerText =
-        "⏸️ Tạm dừng";
+        "   " +
+
+        danhGia;
 
 
     updateInfo();
 }
 
 
-// ========================================
+// ===============================
 // ĐỔI HƯỚNG
-// ========================================
+// ===============================
 
 function changeDirection(newDirection) {
 
 
-    // Nếu game chưa chạy
-    // thì bắt đầu luôn
+    // Chưa chơi
+    // → bắt đầu
 
     if (!running) {
 
-        startMoving(newDirection);
+        startGame(newDirection);
 
         return;
+
     }
 
 
@@ -761,12 +794,14 @@ function changeDirection(newDirection) {
 }
 
 
-// ========================================
+// ===============================
 // PHÍM MŨI TÊN
-// ========================================
+// ===============================
 
 document.addEventListener(
+
     "keydown",
+
     function(event) {
 
 
@@ -815,55 +850,56 @@ document.addEventListener(
         }
 
     }
+
 );
 
 
-// ========================================
-// NÚT ĐIỀU KHIỂN
-// ========================================
+// ===============================
+// NÚT MŨI TÊN
+// ===============================
 
 document.getElementById("up")
-    .onclick = function() {
+.onclick = function() {
 
-        changeDirection("UP");
+    changeDirection("UP");
 
-    };
+};
 
 
 document.getElementById("down")
-    .onclick = function() {
+.onclick = function() {
 
-        changeDirection("DOWN");
+    changeDirection("DOWN");
 
-    };
+};
 
 
 document.getElementById("left")
-    .onclick = function() {
+.onclick = function() {
 
-        changeDirection("LEFT");
+    changeDirection("LEFT");
 
-    };
+};
 
 
 document.getElementById("right")
-    .onclick = function() {
+.onclick = function() {
 
-        changeDirection("RIGHT");
+    changeDirection("RIGHT");
 
-    };
+};
 
 
-// ========================================
+// ===============================
 // TẠM DỪNG
-// ========================================
+// ===============================
 
 function togglePause() {
-
 
     if (!running) {
 
         return;
+
     }
 
 
@@ -872,54 +908,57 @@ function togglePause() {
 
     if (paused) {
 
+        document.getElementById("message")
+            .innerText =
+            "⏸️ ĐANG TẠM DỪNG";
+
+
         document.getElementById("pause")
             .innerText =
-            "▶️ Tiếp tục";
-
-        document.getElementById("message")
-            .innerHTML =
-            "⏸️ ĐANG TẠM DỪNG";
+            "▶️ TIẾP TỤC";
 
     }
 
     else {
 
+        document.getElementById("message")
+            .innerText =
+            "🐍 ĐANG CHƠI";
+
+
         document.getElementById("pause")
             .innerText =
-            "⏸️ Tạm dừng";
-
-        document.getElementById("message")
-            .innerHTML =
-            "🐍 Đang chơi";
+            "⏸️ TẠM DỪNG";
 
     }
 }
 
 
 document.getElementById("pause")
-    .onclick = togglePause;
+.onclick = togglePause;
 
 
-// ========================================
-// NÚT CHƠI LẠI
-// ========================================
+// ===============================
+// CHƠI LẠI
+// ===============================
 
 document.getElementById("restart")
-    .onclick = function() {
+.onclick = function() {
 
-        startGame();
+    resetGame();
 
-    };
+};
 
 
-// ========================================
-// KHỞI ĐỘNG
-// ========================================
+// ===============================
+// BẮT ĐẦU Ở TRẠNG THÁI ĐỨNG YÊN
+// ===============================
 
-startGame();
+resetGame();
 
 
 </script>
+
 
 </body>
 </html>
@@ -929,7 +968,7 @@ startGame();
     st.components.v1.html(
         game,
         height=780,
-        scrolling=False
+        scrolling=True
     )
 
 
