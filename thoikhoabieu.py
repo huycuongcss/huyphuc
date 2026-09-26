@@ -1,7 +1,7 @@
 import streamlit as st
 import ran
 
-st.title("📚 ỨNG DỤNG LỚP 7A17")
+st.title("📚 LỚP 7A17")
 st.write("Trường THCS Nguyễn Du")
 
 
@@ -147,6 +147,6 @@ if menu == "📅 Thời khóa biểu":
 
 elif menu == "🎮 Giải trí":
     ran.main()
-elif manu =="Giới thiệu về lớp học":
+elif menu =="Giới thiệu về lớp học":
     st.subheader("📚 Trang web đang được hoàn thiện")
     st.write("Mình là Nguyễn Huy Phúc")
