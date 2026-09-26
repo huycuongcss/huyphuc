@@ -9,7 +9,7 @@ menu = st.sidebar.selectbox(
     "Chọn chức năng",
     [
         "📅 Thời khóa biểu",
-        "🎮 Giải trí"
+        "🎮 Giải trí",
         "Giới thiệu về lớp học"
     ]
 )
