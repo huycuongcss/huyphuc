@@ -147,3 +147,6 @@ if menu == "📅 Thời khóa biểu":
 
 elif menu == "🎮 Giải trí":
     ran.main()
+elif manu =="Giới thiệu về lớp học":
+    st.subheader("📚 Trang web đang được hoàn thiện")
+    st.write("Mình là Nguyễn Huy Phúc")
