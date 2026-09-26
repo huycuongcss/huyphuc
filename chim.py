@@ -1,489 +1,434 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
+
 def main():
+    st.header("🐦 CHIM CỦA HUY PHÚC")
 
-```
-st.header("🐦 FLAPPY BIRD")
-
-game_html = """
+    game_html = """
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-
 <meta charset="UTF-8">
 
 <meta name="viewport"
       content="width=device-width,
-               initial-scale=1.0,
-               maximum-scale=1.0,
-               user-scalable=no">
+      initial-scale=1.0,
+      maximum-scale=1.0,
+      user-scalable=no">
 
 <style>
 
-    * {
-        box-sizing: border-box;
-    }
+* {
+    box-sizing: border-box;
+}
 
-    html,
-    body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+    font-family: Arial, sans-serif;
+}
 
-        background: transparent;
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
 
-        font-family: Arial, sans-serif;
+#game {
+    position: relative;
 
-        -webkit-user-select: none;
-        user-select: none;
+    width: min(400px, 96vw);
+    height: min(600px, 144vw);
 
-        -webkit-touch-callout: none;
-    }
+    aspect-ratio: 2 / 3;
 
+    margin: 0 auto;
 
-    /* =========================
-       KHUNG GAME
-    ========================= */
+    overflow: hidden;
 
-    #game {
-        width: min(400px, 96vw);
-        height: min(600px, 144vw);
+    background:
+        linear-gradient(
+            #70c5ce 0%,
+            #aee8ef 72%,
+            #ded895 72%,
+            #ded895 100%
+        );
 
-        aspect-ratio: 2 / 3;
+    border: 4px solid #333;
+    border-radius: 12px;
 
-        position: relative;
+    cursor: pointer;
 
-        margin: 0 auto;
+    touch-action: none;
 
-        overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+}
 
-        background:
-            linear-gradient(
-                #70c5ce 0%,
-                #aee8ef 75%,
-                #ded895 75%,
-                #ded895 100%
-            );
 
-        border: 4px solid #333;
+/* MẶT TRỜI */
 
-        border-radius: 12px;
+#sun {
+    position: absolute;
 
-        cursor: pointer;
+    right: 25px;
+    top: 20px;
 
-        touch-action: none;
+    font-size: 45px;
 
-        -webkit-user-select: none;
-        user-select: none;
+    z-index: 2;
 
-        -webkit-tap-highlight-color: transparent;
-    }
+    pointer-events: none;
+}
 
 
-    /* =========================
-       MẶT TRỜI
-    ========================= */
+/* MÂY */
 
-    #sun {
-        position: absolute;
+.cloud {
+    position: absolute;
 
-        right: 25px;
-        top: 25px;
+    font-size: 45px;
 
-        font-size: 45px;
+    opacity: 0.8;
 
-        z-index: 1;
+    z-index: 2;
 
-        pointer-events: none;
-    }
+    pointer-events: none;
+}
 
+#cloud1 {
+    left: 35px;
+    top: 70px;
+}
 
-    /* =========================
-       MÂY
-    ========================= */
+#cloud2 {
+    left: 240px;
+    top: 135px;
+}
 
-    .cloud {
-        position: absolute;
 
-        font-size: 45px;
+/* CHIM */
 
-        opacity: 0.8;
+#bird {
+    position: absolute;
 
-        z-index: 1;
+    left: 70px;
+    top: 250px;
 
-        pointer-events: none;
-    }
+    width: 42px;
+    height: 35px;
 
+    font-size: 34px;
+    line-height: 35px;
 
-    #cloud1 {
-        left: 40px;
-        top: 80px;
-    }
+    z-index: 20;
 
+    pointer-events: none;
 
-    #cloud2 {
-        left: 240px;
-        top: 150px;
-    }
+    transform: rotate(0deg);
+}
 
 
-    /* =========================
-       CHIM
-    ========================= */
+/* ỐNG */
 
-    #bird {
-        position: absolute;
+.pipe {
+    position: absolute;
 
-        left: 70px;
-        top: 250px;
+    width: 65px;
 
-        width: 42px;
-        height: 32px;
+    background: #28a745;
 
-        z-index: 10;
+    border: 3px solid #176b2c;
 
-        font-size: 34px;
+    z-index: 5;
 
-        line-height: 32px;
+    pointer-events: none;
+}
 
-        transform: rotate(0deg);
+.pipe-top {
+    top: 0;
+}
 
-        pointer-events: none;
-    }
+.pipe-bottom {
+    bottom: 0;
+}
 
 
-    /* =========================
-       ỐNG
-    ========================= */
+/* ĐẦU ỐNG */
 
-    .pipe {
-        position: absolute;
+.pipe-top::after,
+.pipe-bottom::after {
+    content: "";
 
-        width: 65px;
+    position: absolute;
 
-        background: #28a745;
+    left: -7px;
 
-        border: 3px solid #176b2c;
+    width: 75px;
+    height: 22px;
 
-        z-index: 5;
+    background: #35c759;
 
-        pointer-events: none;
-    }
+    border: 3px solid #176b2c;
+}
 
+.pipe-top::after {
+    bottom: -3px;
+}
 
-    .pipe-top {
-        top: 0;
-    }
+.pipe-bottom::after {
+    top: -3px;
+}
 
 
-    .pipe-bottom {
-        bottom: 0;
-    }
+/* ĐIỂM */
 
+#score {
+    position: absolute;
 
-    .pipe::after {
-        content: "";
+    top: 15px;
+    left: 20px;
 
-        position: absolute;
+    color: white;
 
-        left: -7px;
+    font-size: 32px;
+    font-weight: bold;
 
-        width: 75px;
+    text-shadow:
+        2px 2px 3px #333;
 
-        height: 22px;
+    z-index: 30;
 
-        background: #35c759;
+    pointer-events: none;
+}
 
-        border: 3px solid #176b2c;
-    }
 
+/* HƯỚNG DẪN */
 
-    .pipe-top::after {
-        bottom: -3px;
-    }
+#help {
+    position: absolute;
 
+    bottom: 12px;
+    left: 0;
 
-    .pipe-bottom::after {
-        top: -3px;
-    }
+    width: 100%;
 
+    text-align: center;
 
-    /* =========================
-       ĐIỂM
-    ========================= */
+    color: white;
 
-    #score {
-        position: absolute;
+    font-size: 15px;
+    font-weight: bold;
 
-        top: 15px;
-        left: 20px;
+    text-shadow:
+        1px 1px 3px #333;
 
-        color: white;
+    z-index: 30;
 
-        font-size: 32px;
+    pointer-events: none;
+}
 
-        font-weight: bold;
 
-        text-shadow:
-            2px 2px 3px #333;
+/* MÀN HÌNH BẮT ĐẦU */
 
-        z-index: 20;
+#startScreen {
+    position: absolute;
 
-        pointer-events: none;
-    }
+    inset: 0;
 
+    background:
+        rgba(0, 0, 0, 0.35);
 
-    /* =========================
-       HƯỚNG DẪN
-    ========================= */
+    z-index: 100;
 
-    #help {
-        position: absolute;
+    display: flex;
 
-        bottom: 15px;
-        left: 0;
+    justify-content: center;
+    align-items: center;
 
-        width: 100%;
+    touch-action: none;
+}
 
-        text-align: center;
+#startBox {
+    background: white;
 
-        color: white;
+    padding: 25px;
 
-        font-size: 16px;
+    border-radius: 15px;
 
-        font-weight: bold;
+    text-align: center;
 
-        text-shadow:
-            1px 1px 2px #333;
+    box-shadow:
+        0 5px 20px rgba(0,0,0,0.3);
+}
 
-        z-index: 20;
+#startBox h2 {
+    margin-top: 0;
 
-        pointer-events: none;
-    }
+    color: #333;
 
+    font-size: 26px;
+}
 
-    /* =========================
-       GAME OVER
-    ========================= */
+#startBox p {
+    color: #555;
 
-    #gameover {
+    font-size: 16px;
+}
 
-        position: absolute;
+#startButton {
+    padding: 14px 30px;
 
-        left: 20px;
-        right: 20px;
+    font-size: 20px;
+    font-weight: bold;
 
-        top: 190px;
+    border: none;
 
-        padding: 25px 15px;
+    border-radius: 10px;
 
-        background: rgba(0, 0, 0, 0.78);
+    background: #28a745;
 
-        color: white;
+    color: white;
 
-        text-align: center;
+    cursor: pointer;
 
-        border-radius: 15px;
+    touch-action: manipulation;
+}
 
-        z-index: 100;
 
-        display: none;
+/* GAME OVER */
 
-        pointer-events: none;
-    }
+#gameover {
+    position: absolute;
 
+    left: 20px;
+    right: 20px;
 
-    #gameover h1 {
+    top: 190px;
 
-        margin: 0 0 10px 0;
+    padding: 25px 15px;
 
-        color: #ff5252;
+    background:
+        rgba(0, 0, 0, 0.82);
 
-        font-size: 35px;
-    }
+    color: white;
 
+    text-align: center;
 
-    #finalScore {
+    border-radius: 15px;
 
-        font-size: 24px;
+    z-index: 200;
 
-        margin: 10px;
-    }
+    display: none;
 
+    pointer-events: none;
+}
 
-    #restartText {
+#gameover h1 {
+    margin: 0 0 10px 0;
 
-        margin-top: 15px;
+    color: #ff5252;
 
-        font-size: 16px;
+    font-size: 35px;
+}
 
-        color: #ffeb3b;
-    }
+#finalScore {
+    font-size: 24px;
 
+    margin: 10px;
+}
 
-    /* =========================
-       START
-    ========================= */
+#restartText {
+    margin-top: 15px;
 
-    #startScreen {
+    font-size: 16px;
 
-        position: absolute;
+    color: #ffeb3b;
+}
 
-        inset: 0;
 
-        background: rgba(0, 0, 0, 0.35);
+/* CHỈ DẪN ĐIỆN THOẠI */
 
-        z-index: 90;
+#mobileHint {
+    position: absolute;
 
-        display: flex;
+    bottom: 38px;
 
-        justify-content: center;
+    left: 0;
+    right: 0;
 
-        align-items: center;
+    text-align: center;
 
-        touch-action: none;
-    }
+    color: white;
 
+    font-size: 14px;
+    font-weight: bold;
 
-    #startBox {
+    text-shadow:
+        1px 1px 3px #333;
 
-        background: white;
+    z-index: 31;
 
-        padding: 25px;
-
-        border-radius: 15px;
-
-        text-align: center;
-
-        box-shadow:
-            0 5px 20px rgba(0,0,0,0.3);
-
-        pointer-events: none;
-    }
-
-
-    #startBox h2 {
-
-        margin-top: 0;
-
-        color: #333;
-    }
-
-
-    #startButton {
-
-        padding: 14px 30px;
-
-        font-size: 20px;
-
-        font-weight: bold;
-
-        border: none;
-
-        border-radius: 10px;
-
-        background: #28a745;
-
-        color: white;
-
-        cursor: pointer;
-
-        pointer-events: auto;
-    }
-
-
-    /* =========================
-       NÚT CHẠM
-    ========================= */
-
-    #mobileHint {
-
-        position: absolute;
-
-        left: 0;
-        right: 0;
-
-        bottom: 45px;
-
-        text-align: center;
-
-        color: white;
-
-        font-size: 15px;
-
-        font-weight: bold;
-
-        text-shadow:
-            1px 1px 3px #333;
-
-        z-index: 25;
-
-        pointer-events: none;
-    }
-
+    pointer-events: none;
+}
 
 </style>
-
 </head>
 
 
 <body>
 
-
 <div id="game">
-
 
     <div id="sun">
         ☀️
     </div>
 
-
     <div id="cloud1" class="cloud">
         ☁️
     </div>
-
 
     <div id="cloud2" class="cloud">
         ☁️
     </div>
 
-
     <div id="score">
         0
     </div>
-
 
     <div id="bird">
         🐦
     </div>
 
-
     <div id="help">
         👆 CHẠM MÀN HÌNH ĐỂ BAY
     </div>
-
 
     <div id="mobileHint">
         SPACE / CHẠM
     </div>
 
 
-    <!-- START -->
+    <!-- MÀN HÌNH BẮT ĐẦU -->
 
     <div id="startScreen">
 
         <div id="startBox">
 
             <h2>
-                🐦 FLAPPY BIRD
+                🐦 CHIM CỦA PHÚC ĐÂY
             </h2>
 
             <p>
-                Vượt qua các ống nước!
+                Vượt qua các ống để ghi điểm!
             </p>
 
             <button id="startButton">
@@ -508,11 +453,10 @@ game_html = """
         </div>
 
         <div id="restartText">
-            👆 Chạm màn hình để chơi lại
+            👆 Chạm màn hình hoặc bấm phím để chơi lại
         </div>
 
     </div>
-
 
 </div>
 
@@ -520,9 +464,9 @@ game_html = """
 <script>
 
 
-// =====================================
-// LẤY ĐỐI TƯỢNG
-// =====================================
+/* =========================
+   LẤY CÁC PHẦN TỬ
+========================= */
 
 const game =
     document.getElementById("game");
@@ -546,9 +490,9 @@ const startButton =
     document.getElementById("startButton");
 
 
-// =====================================
-// KÍCH THƯỚC GAME GỐC
-// =====================================
+/* =========================
+   THÔNG SỐ GAME
+========================= */
 
 const GAME_WIDTH = 400;
 
@@ -558,16 +502,11 @@ const BIRD_X = 70;
 
 const BIRD_WIDTH = 42;
 
-const BIRD_HEIGHT = 32;
+const BIRD_HEIGHT = 35;
 
 const PIPE_WIDTH = 65;
 
-const PIPE_GAP = 160;
-
-
-// =====================================
-// TỐC ĐỘ GAME
-// =====================================
+const PIPE_GAP = 165;
 
 const PIPE_SPEED = 2.5;
 
@@ -576,9 +515,9 @@ const GRAVITY = 0.35;
 const JUMP = -6.5;
 
 
-// =====================================
-// BIẾN GAME
-// =====================================
+/* =========================
+   BIẾN GAME
+========================= */
 
 let birdY = 250;
 
@@ -595,48 +534,15 @@ let pipes = [];
 let lastTime = 0;
 
 
-// =====================================
-// RESET GAME
-// =====================================
-
-function resetGame() {
-
-    birdY = 250;
-
-    birdVelocity = 0;
-
-    score = 0;
-
-    gameOver = false;
-
-    scoreText.innerText = "0";
-
-    bird.style.top =
-        birdY + "px";
-
-    bird.style.transform =
-        "rotate(0deg)";
-
-    gameover.style.display =
-        "none";
-
-
-    createPipe(430);
-
-    createPipe(680);
-}
-
-
-// =====================================
-// TẠO ỐNG
-// =====================================
+/* =========================
+   TẠO ỐNG
+========================= */
 
 function createPipe(x) {
 
     const minGapY = 180;
 
-    const maxGapY = 400;
-
+    const maxGapY = 390;
 
     const gapY =
         Math.floor(
@@ -656,14 +562,11 @@ function createPipe(x) {
     const topPipe =
         document.createElement("div");
 
-
     topPipe.className =
         "pipe pipe-top";
 
-
     topPipe.style.left =
         x + "px";
-
 
     topPipe.style.height =
         topHeight + "px";
@@ -672,14 +575,11 @@ function createPipe(x) {
     const bottomPipe =
         document.createElement("div");
 
-
     bottomPipe.className =
         "pipe pipe-bottom";
 
-
     bottomPipe.style.left =
         x + "px";
-
 
     bottomPipe.style.height =
         (GAME_HEIGHT - bottomTop) + "px";
@@ -707,9 +607,69 @@ function createPipe(x) {
 }
 
 
-// =====================================
-// CHIM BAY
-// =====================================
+/* =========================
+   XÓA ỐNG
+========================= */
+
+function removePipe(pipe) {
+
+    if (pipe.top) {
+        pipe.top.remove();
+    }
+
+    if (pipe.bottom) {
+        pipe.bottom.remove();
+    }
+
+}
+
+
+/* =========================
+   RESET GAME
+========================= */
+
+function resetGame() {
+
+    birdY = 250;
+
+    birdVelocity = 0;
+
+    score = 0;
+
+    gameOver = false;
+
+    scoreText.innerText = "0";
+
+    bird.style.top =
+        birdY + "px";
+
+    bird.style.transform =
+        "rotate(0deg)";
+
+
+    gameover.style.display =
+        "none";
+
+
+    for (let pipe of pipes) {
+
+        removePipe(pipe);
+
+    }
+
+    pipes = [];
+
+
+    createPipe(450);
+
+    createPipe(700);
+
+}
+
+
+/* =========================
+   CHIM BAY
+========================= */
 
 function jump() {
 
@@ -717,24 +677,19 @@ function jump() {
         return;
     }
 
-
     if (gameOver) {
-
         restartGame();
-
         return;
-
     }
-
 
     birdVelocity = JUMP;
 
 }
 
 
-// =====================================
-// VA CHẠM
-// =====================================
+/* =========================
+   KIỂM TRA VA CHẠM
+========================= */
 
 function collision(pipe) {
 
@@ -767,7 +722,6 @@ function collision(pipe) {
             pipe.gapY -
             PIPE_GAP / 2;
 
-
         const gapBottom =
             pipe.gapY +
             PIPE_GAP / 2;
@@ -790,9 +744,9 @@ function collision(pipe) {
 }
 
 
-// =====================================
-// GAME OVER
-// =====================================
+/* =========================
+   GAME OVER
+========================= */
 
 function endGame() {
 
@@ -811,27 +765,9 @@ function endGame() {
 }
 
 
-// =====================================
-// XÓA ỐNG
-// =====================================
-
-function removePipe(pipe) {
-
-    if (pipe.top) {
-        pipe.top.remove();
-    }
-
-
-    if (pipe.bottom) {
-        pipe.bottom.remove();
-    }
-
-}
-
-
-// =====================================
-// CẬP NHẬT GAME
-// =====================================
+/* =========================
+   CẬP NHẬT GAME
+========================= */
 
 function update(delta) {
 
@@ -840,7 +776,7 @@ function update(delta) {
     }
 
 
-    // TRỌNG LỰC
+    /* CHUYỂN ĐỘNG CHIM */
 
     birdVelocity +=
         GRAVITY * delta;
@@ -849,8 +785,6 @@ function update(delta) {
     birdY +=
         birdVelocity * delta;
 
-
-    // XOAY CHIM
 
     let angle =
         birdVelocity * 4;
@@ -874,7 +808,7 @@ function update(delta) {
         birdY + "px";
 
 
-    // DI CHUYỂN ỐNG
+    /* DI CHUYỂN ỐNG */
 
     for (
         let i = pipes.length - 1;
@@ -898,7 +832,7 @@ function update(delta) {
             pipe.x + "px";
 
 
-        // TÍNH ĐIỂM
+        /* TÍNH ĐIỂM */
 
         if (
             !pipe.passed &&
@@ -915,11 +849,9 @@ function update(delta) {
         }
 
 
-        // VA CHẠM
+        /* VA CHẠM */
 
-        if (
-            collision(pipe)
-        ) {
+        if (collision(pipe)) {
 
             endGame();
 
@@ -928,7 +860,7 @@ function update(delta) {
         }
 
 
-        // XÓA ỐNG
+        /* XÓA ỐNG CŨ */
 
         if (
             pipe.x < -PIPE_WIDTH
@@ -943,7 +875,7 @@ function update(delta) {
     }
 
 
-    // TẠO ỐNG MỚI
+    /* TẠO ỐNG MỚI */
 
     if (pipes.length > 0) {
 
@@ -951,9 +883,7 @@ function update(delta) {
             pipes[pipes.length - 1];
 
 
-        if (
-            lastPipe.x < 180
-        ) {
+        if (lastPipe.x < 180) {
 
             createPipe(
                 GAME_WIDTH + 50
@@ -964,7 +894,7 @@ function update(delta) {
     }
 
 
-    // ĐỤNG TRẦN
+    /* ĐỤNG TRẦN */
 
     if (birdY <= 0) {
 
@@ -977,7 +907,7 @@ function update(delta) {
     }
 
 
-    // ĐỤNG ĐẤT
+    /* ĐỤNG ĐẤT */
 
     if (
         birdY + BIRD_HEIGHT >=
@@ -993,9 +923,9 @@ function update(delta) {
 }
 
 
-// =====================================
-// GAME LOOP
-// =====================================
+/* =========================
+   VÒNG LẶP GAME
+========================= */
 
 function gameLoop(time) {
 
@@ -1030,28 +960,14 @@ function gameLoop(time) {
 }
 
 
-// =====================================
-// BẮT ĐẦU
-// =====================================
+/* =========================
+   BẮT ĐẦU GAME
+========================= */
 
 function startGame() {
 
     startScreen.style.display =
         "none";
-
-
-    // XÓA ỐNG CŨ
-
-    for (
-        let pipe of pipes
-    ) {
-
-        removePipe(pipe);
-
-    }
-
-
-    pipes = [];
 
 
     resetGame();
@@ -1068,23 +984,11 @@ function startGame() {
 }
 
 
-// =====================================
-// CHƠI LẠI
-// =====================================
+/* =========================
+   CHƠI LẠI
+========================= */
 
 function restartGame() {
-
-    for (
-        let pipe of pipes
-    ) {
-
-        removePipe(pipe);
-
-    }
-
-
-    pipes = [];
-
 
     resetGame();
 
@@ -1104,9 +1008,9 @@ function restartGame() {
 }
 
 
-// =====================================
-// NÚT BẮT ĐẦU
-// =====================================
+/* =========================
+   NÚT BẮT ĐẦU
+========================= */
 
 startButton.addEventListener(
     "click",
@@ -1120,29 +1024,16 @@ startButton.addEventListener(
 );
 
 
-// =====================================
-// BÀN PHÍM
-// =====================================
+/* =========================
+   BÀN PHÍM MÁY TÍNH
+========================= */
 
 document.addEventListener(
     "keydown",
     function(event) {
 
-        // START
 
-        if (
-            startScreen.style.display !==
-            "none"
-        ) {
-
-            startGame();
-
-            return;
-
-        }
-
-
-        // GAME OVER
+        /* GAME OVER */
 
         if (gameOver) {
 
@@ -1153,7 +1044,21 @@ document.addEventListener(
         }
 
 
-        // SPACE
+        /* CHƯA BẮT ĐẦU */
+
+        if (
+            startScreen.style.display
+            !== "none"
+        ) {
+
+            startGame();
+
+            return;
+
+        }
+
+
+        /* PHÍM SPACE */
 
         if (
             event.code === "Space"
@@ -1169,9 +1074,9 @@ document.addEventListener(
 );
 
 
-// =====================================
-// ĐIỆN THOẠI + CHUỘT + BÚT CẢM ỨNG
-// =====================================
+/* =========================
+   CHẠM / CLICK
+========================= */
 
 game.addEventListener(
     "pointerdown",
@@ -1180,7 +1085,7 @@ game.addEventListener(
         event.preventDefault();
 
 
-        // Nếu bấm nút bắt đầu
+        /* NẾU BẤM NÚT BẮT ĐẦU */
 
         if (
             event.target ===
@@ -1192,11 +1097,11 @@ game.addEventListener(
         }
 
 
-        // MÀN HÌNH START
+        /* MÀN HÌNH BẮT ĐẦU */
 
         if (
-            startScreen.style.display !==
-            "none"
+            startScreen.style.display
+            !== "none"
         ) {
 
             startGame();
@@ -1206,7 +1111,7 @@ game.addEventListener(
         }
 
 
-        // GAME OVER
+        /* GAME OVER */
 
         if (gameOver) {
 
@@ -1217,7 +1122,7 @@ game.addEventListener(
         }
 
 
-        // ĐANG CHƠI
+        /* ĐANG CHƠI */
 
         if (running) {
 
@@ -1229,9 +1134,9 @@ game.addEventListener(
 );
 
 
-// =====================================
-// CHỐNG MENU CHUỘT PHẢI
-// =====================================
+/* =========================
+   KHÔNG HIỆN MENU CHUỘT PHẢI
+========================= */
 
 game.addEventListener(
     "contextmenu",
@@ -1243,9 +1148,9 @@ game.addEventListener(
 );
 
 
-// =====================================
-// CHẠY GAME
-// =====================================
+/* =========================
+   CHẠY GAME
+========================= */
 
 requestAnimationFrame(
     gameLoop
@@ -1258,13 +1163,12 @@ requestAnimationFrame(
 </html>
 """
 
+    components.html(
+        game_html,
+        height=640,
+        scrolling=False
+    )
 
-components.html(
-    game_html,
-    height=640,
-    scrolling=False
-)
-```
 
-if **name** == "**main**":
-main()
+if __name__ == "__main__":
+    main()
