@@ -3,7 +3,7 @@ import ran
 
 st.title("📚 ỨNG DỤNG LỚP 7A17")
 st.write("Trường THCS Nguyễn Du")
-st.write("Năm học 2026 - 2027")
+
 
 menu = st.sidebar.selectbox(
     "Chọn chức năng",
@@ -14,6 +14,7 @@ menu = st.sidebar.selectbox(
 )
 if menu == "📅 Thời khóa biểu":
     st.subheader("📚 THỜI KHÓA BIỂU 7A17")
+    st.write("Năm học 2026 - 2027")
     # Màu
     mau = {
         "Toán": "blue",
@@ -140,8 +141,6 @@ if menu == "📅 Thời khóa biểu":
                 """,
                 unsafe_allow_html=True
             )
-
-    st.caption("Cập nhật bởi huyphuc-7a17")
 
     st.caption("Cập nhật bởi huyphuc-7a17")
 
