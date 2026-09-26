@@ -582,7 +582,7 @@ startGame();
 
     st.components.v1.html(
         game,
-        height=720,
+        height=850,
         scrolling=False
     )
 
