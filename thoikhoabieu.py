@@ -10,6 +10,7 @@ menu = st.sidebar.selectbox(
     [
         "📅 Thời khóa biểu",
         "🎮 Giải trí"
+        "Giới thiệu về lớp học"
     ]
 )
 if menu == "📅 Thời khóa biểu":
