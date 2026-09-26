@@ -1,6 +1,7 @@
 import streamlit as st
 import ran
 import duaxe
+import chim 
 
 st.title("📚 LỚP 7A17")
 st.write("Trường THCS Nguyễn Du")
@@ -147,13 +148,15 @@ if menu == "📅 Thời khóa biểu":
     st.caption("Cập nhật bởi huyphuc-7a17")
 
 elif menu == "🎮 Giải trí":
-    st.header("🎮 KHU VỰC GIẢI TRÍ")
+
+    st.header("🎮 KHU GIẢI TRÍ")
 
     game = st.selectbox(
-        "🎮 Chọn trò chơi",
+        "🎯 Chọn game",
         [
             "🐍 Rắn săn mồi",
-            "🏎️ Đua xe"
+            "🏎️ Đua xe",
+            "🐦 chim"
         ]
     )
 
@@ -163,6 +166,8 @@ elif menu == "🎮 Giải trí":
     elif game == "🏎️ Đua xe":
         duaxe.main()
 
+    elif game == "🐦 chim":
+        chim.main()
 elif menu =="Giới thiệu về lớp học":
     st.subheader("📚 Trang web đang được hoàn thiện")
     st.write("Mình là Nguyễn Huy Phúc")
