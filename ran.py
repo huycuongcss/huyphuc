@@ -1,13 +1,13 @@
+
 import streamlit as st
 
 
 def main():
 
-    st.success("🐍 RẮN SĂN MỒI - BẢN MỚI")
-
     game = r'''
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <meta charset="UTF-8">
@@ -15,86 +15,196 @@ def main():
 <style>
 
 body {
+
     margin: 0;
+
     padding: 10px;
+
     font-family: Arial;
+
     text-align: center;
+
     background: #f5f5f5;
+
+    user-select: none;
+
+    -webkit-user-select: none;
 }
+
 
 h1 {
+
     margin: 5px;
+
     color: #1b5e20;
+
 }
+
 
 .info {
+
     font-size: 18px;
+
     font-weight: bold;
+
     margin: 8px;
+
 }
+
 
 #message {
-    height: 55px;
+
+    min-height: 55px;
+
     font-size: 20px;
+
     font-weight: bold;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
 }
 
+
 #game {
+
     width: 400px;
+
     height: 400px;
+
     margin: auto;
+
     background: #111;
+
     border: 5px solid #333;
 
     display: grid;
 
-    grid-template-columns:
-        repeat(20, 1fr);
+    grid-template-columns: repeat(20, 1fr);
 
-    grid-template-rows:
-        repeat(20, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+
+    touch-action: none;
+
 }
+
 
 .cell {
+
     width: 100%;
+
     height: 100%;
+
 }
+
 
 .snake {
+
     background: #00e676;
+
 }
+
 
 .head {
+
     background: #76ff03;
+
 }
+
 
 .food {
+
     background: red;
+
     border-radius: 50%;
+
 }
+
 
 button {
+
     border: none;
+
     border-radius: 10px;
+
     padding: 10px 18px;
+
     margin: 4px;
+
     font-size: 20px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
 }
+
 
 .direction {
+
     background: #2196f3;
+
     color: white;
+
+    width: 65px;
+
+    height: 55px;
+
 }
+
 
 .restart {
+
     background: #4caf50;
+
     color: white;
+
 }
 
+
 .pause {
+
     background: #ff9800;
+
     color: white;
+
 }
+
+
+#mobile-help {
+
+    font-size: 16px;
+
+    margin-top: 10px;
+
+}
+
+
+@media (max-width: 600px) {
+
+    #game {
+
+        width: 90vw;
+
+        height: 90vw;
+
+        max-width: 400px;
+
+        max-height: 400px;
+
+    }
+
+    button {
+
+        font-size: 18px;
+
+    }
+
+}
+
 
 </style>
 
@@ -110,22 +220,23 @@ button {
 <div class="info">
 
 Điểm:
+
 <span id="score">0</span>
 
 &nbsp;&nbsp;
 
 Độ dài:
+
 <span id="length">3</span>
 
 &nbsp;&nbsp;
 
 Tốc độ:
+
 <span id="speed">0</span>
 
 </div>
 
-
-<!-- NÚT CHƠI LẠI ĐẶT Ở TRÊN -->
 
 <div>
 
@@ -136,6 +247,7 @@ id="restart">
 🔄 CHƠI LẠI
 
 </button>
+
 
 <button
 class="pause"
@@ -158,7 +270,8 @@ id="pause">
 <div id="game"></div>
 
 
-<!-- NÚT ĐIỀU KHIỂN -->
+<br>
+
 
 <div>
 
@@ -202,21 +315,21 @@ id="right">
 </div>
 
 
-<p>
+<div id="mobile-help">
 
 💻 Máy tính: dùng phím mũi tên<br>
 
-📱 Điện thoại: dùng các nút bên trên
+📱 Điện thoại: dùng các nút hoặc chạm màn hình
 
-</p>
+</div>
 
 
 <script>
 
 
-// ===============================
-// CÀI ĐẶT
-// ===============================
+// ======================================
+// CÀI ĐẶT GAME
+// ======================================
 
 const SIZE = 20;
 
@@ -225,9 +338,9 @@ const START_SPEED = 300;
 const MIN_SPEED = 80;
 
 
-// ===============================
+// ======================================
 // BIẾN GAME
-// ===============================
+// ======================================
 
 let snake;
 
@@ -248,9 +361,9 @@ let running;
 let paused;
 
 
-// ===============================
-// KHỞI TẠO
-// ===============================
+// ======================================
+// RESET GAME
+// ======================================
 
 function resetGame() {
 
@@ -286,12 +399,16 @@ function resetGame() {
     paused = false;
 
 
-    document.getElementById("message").innerText =
+    document.getElementById(
+        "message"
+    ).innerText =
 
         "▶️ Bấm phím mũi tên để bắt đầu";
 
 
-    document.getElementById("pause").innerText =
+    document.getElementById(
+        "pause"
+    ).innerText =
 
         "⏸️ TẠM DỪNG";
 
@@ -299,12 +416,13 @@ function resetGame() {
     draw();
 
     updateInfo();
+
 }
 
 
-// ===============================
+// ======================================
 // TẠO MỒI
-// ===============================
+// ======================================
 
 function createFood() {
 
@@ -317,43 +435,52 @@ function createFood() {
 
     do {
 
-        x =
-            Math.floor(
-                Math.random() * SIZE
-            );
+        x = Math.floor(
+            Math.random() * SIZE
+        );
 
-        y =
-            Math.floor(
-                Math.random() * SIZE
-            );
+
+        y = Math.floor(
+            Math.random() * SIZE
+        );
 
 
         ok = true;
 
 
-        for (let part of snake) {
+        for (
+            let part of snake
+        ) {
 
             if (
+
                 part[0] === x &&
+
                 part[1] === y
+
             ) {
 
                 ok = false;
+
+                break;
 
             }
 
         }
 
-    } while (!ok);
+    }
+
+    while (!ok);
 
 
     return [x, y];
+
 }
 
 
-// ===============================
-// BẮT ĐẦU
-// ===============================
+// ======================================
+// BẮT ĐẦU GAME
+// ======================================
 
 function startGame(newDirection) {
 
@@ -361,12 +488,15 @@ function startGame(newDirection) {
 
     nextDirection = newDirection;
 
+
     running = true;
 
     paused = false;
 
 
-    document.getElementById("message").innerText =
+    document.getElementById(
+        "message"
+    ).innerText =
 
         "🐍 ĐANG CHƠI";
 
@@ -384,12 +514,13 @@ function startGame(newDirection) {
 
 
     updateInfo();
+
 }
 
 
-// ===============================
+// ======================================
 // GAME LOOP
-// ===============================
+// ======================================
 
 function gameLoop() {
 
@@ -419,35 +550,45 @@ function gameLoop() {
     ];
 
 
-    if (direction === "UP") {
+    if (
+        direction === "UP"
+    ) {
 
         head[1]--;
 
     }
 
 
-    if (direction === "DOWN") {
+    else if (
+        direction === "DOWN"
+    ) {
 
         head[1]++;
 
     }
 
 
-    if (direction === "LEFT") {
+    else if (
+        direction === "LEFT"
+    ) {
 
         head[0]--;
 
     }
 
 
-    if (direction === "RIGHT") {
+    else if (
+        direction === "RIGHT"
+    ) {
 
         head[0]++;
 
     }
 
 
+    // ==================================
     // ĐỤNG TƯỜNG
+    // ==================================
 
     if (
 
@@ -468,9 +609,13 @@ function gameLoop() {
     }
 
 
+    // ==================================
     // ĐỤNG THÂN
+    // ==================================
 
-    for (let part of snake) {
+    for (
+        let part of snake
+    ) {
 
         if (
 
@@ -492,7 +637,9 @@ function gameLoop() {
     snake.unshift(head);
 
 
+    // ==================================
     // ĂN MỒI
+    // ==================================
 
     if (
 
@@ -508,7 +655,9 @@ function gameLoop() {
         food = createFood();
 
 
-        if (speed > MIN_SPEED) {
+        if (
+            speed > MIN_SPEED
+        ) {
 
             speed -= 15;
 
@@ -528,6 +677,7 @@ function gameLoop() {
 
     }
 
+
     else {
 
         snake.pop();
@@ -538,24 +688,27 @@ function gameLoop() {
     draw();
 
     updateInfo();
+
 }
 
 
-// ===============================
+// ======================================
 // VẼ GAME
-// ===============================
+// ======================================
 
 function draw() {
 
     let board =
 
-        document.getElementById("game");
+        document.getElementById(
+            "game"
+        );
 
 
     board.innerHTML = "";
 
 
-    // RẮN
+    // VẼ RẮN
 
     for (
 
@@ -569,7 +722,9 @@ function draw() {
 
         let cell =
 
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
 
         if (i === 0) {
@@ -602,11 +757,13 @@ function draw() {
     }
 
 
-    // MỒI
+    // VẼ MỒI
 
     let foodCell =
 
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     foodCell.className =
@@ -624,27 +781,31 @@ function draw() {
 
 
     board.appendChild(foodCell);
+
 }
 
 
-// ===============================
-// THÔNG TIN
-// ===============================
+// ======================================
+// CẬP NHẬT THÔNG TIN
+// ======================================
 
 function updateInfo() {
 
-    document.getElementById("score")
-        .innerText = score;
+    document.getElementById(
+        "score"
+    ).innerText = score;
 
 
-    document.getElementById("length")
-        .innerText = snake.length;
+    document.getElementById(
+        "length"
+    ).innerText = snake.length;
 
 
     if (running) {
 
-        document.getElementById("speed")
-            .innerText =
+        document.getElementById(
+            "speed"
+        ).innerText =
 
             Math.round(
                 1000 / speed
@@ -654,16 +815,18 @@ function updateInfo() {
 
     else {
 
-        document.getElementById("speed")
-            .innerText = 0;
+        document.getElementById(
+            "speed"
+        ).innerText = 0;
 
     }
+
 }
 
 
-// ===============================
+// ======================================
 // GAME OVER
-// ===============================
+// ======================================
 
 function gameOver() {
 
@@ -707,32 +870,40 @@ function gameOver() {
     }
 
 
-    document.getElementById("message").innerText =
+    document.getElementById(
+        "message"
+    ).innerText =
 
-        "💥 GAME OVER!   " +
+        "💥 GAME OVER!  " +
 
         "Điểm: " +
 
         score +
 
-        "   " +
+        "  " +
 
-        danhGia;
+        danhGia +
+
+        " — BẤM PHÍM BẤT KỲ " +
+
+        "HOẶC CHẠM MÀN HÌNH ĐỂ CHƠI LẠI";
 
 
     updateInfo();
+
 }
 
 
-// ===============================
+// ======================================
 // ĐỔI HƯỚNG
-// ===============================
+// ======================================
 
-function changeDirection(newDirection) {
+function changeDirection(
+    newDirection
+) {
 
-
-    // Chưa chơi
-    // → bắt đầu
+    // Nếu chưa chơi
+    // thì bắt đầu
 
     if (!running) {
 
@@ -756,7 +927,7 @@ function changeDirection(newDirection) {
     }
 
 
-    if (
+    else if (
 
         newDirection === "DOWN" &&
 
@@ -769,7 +940,7 @@ function changeDirection(newDirection) {
     }
 
 
-    if (
+    else if (
 
         newDirection === "LEFT" &&
 
@@ -782,7 +953,7 @@ function changeDirection(newDirection) {
     }
 
 
-    if (
+    else if (
 
         newDirection === "RIGHT" &&
 
@@ -793,12 +964,13 @@ function changeDirection(newDirection) {
         nextDirection = "RIGHT";
 
     }
+
 }
 
 
-// ===============================
-// PHÍM MŨI TÊN
-// ===============================
+// ======================================
+// BẤM PHÍM
+// ======================================
 
 document.addEventListener(
 
@@ -807,7 +979,68 @@ document.addEventListener(
     function(event) {
 
 
-        if (event.key === "ArrowUp") {
+        // ==============================
+        // GAME OVER
+        // ==============================
+
+        if (!running) {
+
+            resetGame();
+
+
+            if (
+                event.key === "ArrowUp"
+            ) {
+
+                changeDirection("UP");
+
+            }
+
+            else if (
+                event.key === "ArrowDown"
+            ) {
+
+                changeDirection("DOWN");
+
+            }
+
+            else if (
+                event.key === "ArrowLeft"
+            ) {
+
+                changeDirection("LEFT");
+
+            }
+
+            else if (
+                event.key === "ArrowRight"
+            ) {
+
+                changeDirection("RIGHT");
+
+            }
+
+            else {
+
+                changeDirection("RIGHT");
+
+            }
+
+
+            event.preventDefault();
+
+            return;
+
+        }
+
+
+        // ==============================
+        // ĐANG CHƠI
+        // ==============================
+
+        if (
+            event.key === "ArrowUp"
+        ) {
 
             event.preventDefault();
 
@@ -816,7 +1049,9 @@ document.addEventListener(
         }
 
 
-        if (event.key === "ArrowDown") {
+        else if (
+            event.key === "ArrowDown"
+        ) {
 
             event.preventDefault();
 
@@ -825,7 +1060,9 @@ document.addEventListener(
         }
 
 
-        if (event.key === "ArrowLeft") {
+        else if (
+            event.key === "ArrowLeft"
+        ) {
 
             event.preventDefault();
 
@@ -834,7 +1071,9 @@ document.addEventListener(
         }
 
 
-        if (event.key === "ArrowRight") {
+        else if (
+            event.key === "ArrowRight"
+        ) {
 
             event.preventDefault();
 
@@ -843,7 +1082,9 @@ document.addEventListener(
         }
 
 
-        if (event.code === "Space") {
+        else if (
+            event.code === "Space"
+        ) {
 
             event.preventDefault();
 
@@ -856,45 +1097,132 @@ document.addEventListener(
 );
 
 
-// ===============================
-// NÚT MŨI TÊN
-// ===============================
+// ======================================
+// CHẠM MÀN HÌNH
+// ======================================
 
-document.getElementById("up")
-.onclick = function() {
+document.addEventListener(
+
+    "touchstart",
+
+    function(event) {
+
+
+        // GAME OVER
+
+        if (!running) {
+
+            resetGame();
+
+            changeDirection("RIGHT");
+
+            event.preventDefault();
+
+            return;
+
+        }
+
+    },
+
+    {
+        passive: false
+    }
+
+);
+
+
+// ======================================
+// CLICK CHUỘT SAU GAME OVER
+// ======================================
+
+document.addEventListener(
+
+    "click",
+
+    function(event) {
+
+
+        if (!running) {
+
+
+            // Nếu bấm nút điều khiển
+            // thì để xử lý riêng
+
+            if (
+
+                event.target.id === "up" ||
+
+                event.target.id === "down" ||
+
+                event.target.id === "left" ||
+
+                event.target.id === "right" ||
+
+                event.target.id === "pause" ||
+
+                event.target.id === "restart"
+
+            ) {
+
+                return;
+
+            }
+
+
+            resetGame();
+
+            changeDirection("RIGHT");
+
+        }
+
+    }
+
+);
+
+
+// ======================================
+// NÚT ĐIỀU KHIỂN
+// ======================================
+
+document.getElementById(
+    "up"
+).onclick = function() {
 
     changeDirection("UP");
 
 };
 
 
-document.getElementById("down")
-.onclick = function() {
+document.getElementById(
+    "down"
+).onclick = function() {
 
     changeDirection("DOWN");
 
 };
 
 
-document.getElementById("left")
-.onclick = function() {
+document.getElementById(
+    "left"
+).onclick = function() {
 
     changeDirection("LEFT");
 
 };
 
 
-document.getElementById("right")
-.onclick = function() {
+document.getElementById(
+    "right"
+).onclick = function() {
 
     changeDirection("RIGHT");
 
 };
 
 
-// ===============================
+// ======================================
 // TẠM DỪNG
-// ===============================
+// ======================================
 
 function togglePause() {
 
@@ -910,66 +1238,77 @@ function togglePause() {
 
     if (paused) {
 
-        document.getElementById("message")
-            .innerText =
+        document.getElementById(
+            "message"
+        ).innerText =
+
             "⏸️ ĐANG TẠM DỪNG";
 
 
-        document.getElementById("pause")
-            .innerText =
+        document.getElementById(
+            "pause"
+        ).innerText =
+
             "▶️ TIẾP TỤC";
 
     }
 
     else {
 
-        document.getElementById("message")
-            .innerText =
+        document.getElementById(
+            "message"
+        ).innerText =
+
             "🐍 ĐANG CHƠI";
 
 
-        document.getElementById("pause")
-            .innerText =
+        document.getElementById(
+            "pause"
+        ).innerText =
+
             "⏸️ TẠM DỪNG";
 
     }
+
 }
 
 
-document.getElementById("pause")
-.onclick = togglePause;
+document.getElementById(
+    "pause"
+).onclick = togglePause;
 
 
-// ===============================
-// CHƠI LẠI
-// ===============================
+// ======================================
+// NÚT CHƠI LẠI
+// ======================================
 
-document.getElementById("restart")
-.onclick = function() {
+document.getElementById(
+    "restart"
+).onclick = function() {
 
     resetGame();
 
 };
 
 
-// ===============================
-// BẮT ĐẦU Ở TRẠNG THÁI ĐỨNG YÊN
-// ===============================
+// ======================================
+// KHỞI ĐỘNG
+// ======================================
 
 resetGame();
 
 
 </script>
 
-
 </body>
+
 </html>
 '''
 
 
     st.components.v1.html(
         game,
-        height=780,
+        height=800,
         scrolling=True
     )
 
