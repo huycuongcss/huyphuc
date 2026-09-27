@@ -4,7 +4,12 @@ import duaxe
 import chim 
 import dientich
 import thoikhoabieu
+import thugian
 
+st.set_page_config(
+    page_title="Trang chủ",
+    page_icon="🏠"
+)
 st.title("📚 LỚP 7A17")
 st.write("Trường THCS Nguyễn Du")
 
@@ -15,7 +20,8 @@ menu = st.sidebar.selectbox(
         "📅 Thời khóa biểu",
         "📐 Tính diện tích",
         "🎮 Giải trí",
-        "Giới thiệu về lớp học"
+        "🎵 Thư giãn",
+        "✈ Giới thiệu về lớp học"
     ]
 )
 if menu == "📅 Thời khóa biểu":
@@ -45,7 +51,8 @@ elif menu == "🎮 Giải trí":
         chim.main()
 elif menu == "📐 Tính diện tích":
     dientich.main()
-
-elif menu =="Giới thiệu về lớp học":
+elif menu =="🎵 Thư giãn":
+    thugian.main()
+elif menu =="✈ Giới thiệu về lớp họcc":
     st.subheader("📚 Trang web đang được hoàn thiện")
     st.write("Mình là Nguyễn Huy Phúc")
