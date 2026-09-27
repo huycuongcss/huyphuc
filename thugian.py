@@ -1,33 +1,71 @@
 import streamlit as st
-import webbrowser
+
 def main():
-    st.set_page_config(
-    page_title="🎵 Thư giãn",
-    page_icon="🎵"
-    )
 
-    st.title("🎵 GÓC THƯ GIÃN")
-    st.write("Chọn thể loại nhạc bạn muốn nghe:")
+st.title("🎵 GÓC THƯ GIÃN")
 
-    if st.button("🎵 Nhạc thư giãn"):
-        webbrowser.open(
-    "https://www.youtube.com/results?search_query=nhạc+thư+giãn"
-    )
+st.write("Chọn một nội dung để nghe nhạc:")
 
-    if st.button("🌿 Nhạc thiên nhiên"):
-        webbrowser.open(
-    "https://www.youtube.com/results?search_query=nhạc+thiên+nhiên+thư+giãn"
-    )
+st.markdown(
+    """
+    <a href="https://www.youtube.com" target="_blank">
+        <button style="
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            cursor: pointer;
+        ">
+            🎵 MỞ YOUTUBE
+        </button>
+    </a>
+    """,
+    unsafe_allow_html=True
+)
 
-    if st.button("☕ Nhạc cà phê"):
-        webbrowser.open(
-    "https://www.youtube.com/results?search_query=nhạc+cafe+chill"
-    )
+st.markdown(
+    """
+    <a href="https://www.youtube.com/results?search_query=nhac+thu+gian" target="_blank">
+        <button style="
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            cursor: pointer;
+        ">
+            🌿 Nhạc thư giãn
+        </button>
+    </a>
+    """,
+    unsafe_allow_html=True
+)
 
-    if st.button("🎹 Piano nhẹ nhàng"):
-        webbrowser.open(
-    "https://www.youtube.com/results?search_query=piano+nhẹ+nhàng"
-    )
+st.markdown(
+    """
+    <a href="https://www.youtube.com/results?search_query=nhac+cafe+chill" target="_blank">
+        <button style="
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            cursor: pointer;
+        ">
+            ☕ Nhạc Cafe Chill
+        </button>
+    </a>
+    """,
+    unsafe_allow_html=True
+)
 
-    if st.button("🎶 YouTube"):
-        webbrowser.open("https://www.youtube.com")
+st.markdown(
+    """
+    <a href="https://www.youtube.com/results?search_query=piano+relaxing+music" target="_blank">
+        <button style="
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            cursor: pointer;
+        ">
+            🎹 Piano thư giãn
+        </button>
+    </a>
+    """,
+    unsafe_allow_html=True
+)
