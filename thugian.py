@@ -17,7 +17,7 @@ def main():
     </a>
     """,
     unsafe_allow_html=True
-)
+    )
 
 st.markdown(
     """
@@ -33,7 +33,7 @@ st.markdown(
     </a>
     """,
     unsafe_allow_html=True
-)
+    )
 
 st.markdown(
     """
@@ -49,7 +49,7 @@ st.markdown(
     </a>
     """,
     unsafe_allow_html=True
-)
+    )
 
 st.markdown(
     """
@@ -65,4 +65,4 @@ st.markdown(
     </a>
     """,
     unsafe_allow_html=True
-)
+    )
