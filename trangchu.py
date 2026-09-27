@@ -6,6 +6,7 @@ import dientich
 import thoikhoabieu
 import thugian
 import vatly
+import gioithieu
 
 st.set_page_config(
     page_title="Trang chủ",
@@ -57,8 +58,8 @@ elif menu =="🎵 Thư giãn":
     thugian.main()
 elif menu =="🚗 Vật lý":
     vatly.main()
-elif menu =="✈ Giới thiệu về lớp họcc":
-    st.subheader("📚 Trang web đang được hoàn thiện")
-    st.write("Mình là Nguyễn Huy Phúc")
+elif menu =="✈ Giới thiệu về lớp học":
+    gioithieu.main()
+
 st.markdown("---")
 st.caption("🚨 Bản quyền: Huy Phúc")
