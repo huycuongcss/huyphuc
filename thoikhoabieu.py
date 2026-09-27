@@ -2,6 +2,7 @@ import streamlit as st
 import ran
 import duaxe
 import chim 
+import dientich
 
 st.title("📚 LỚP 7A17")
 st.write("Trường THCS Nguyễn Du")
@@ -11,6 +12,7 @@ menu = st.sidebar.selectbox(
     "Chọn chức năng",
     [
         "📅 Thời khóa biểu",
+        "📐 Tính diện tích",
         "🎮 Giải trí",
         "Giới thiệu về lớp học"
     ]
@@ -168,6 +170,9 @@ elif menu == "🎮 Giải trí":
 
     elif game == "🐦 chim":
         chim.main()
+elif menu == "📐 Tính diện tích":
+    dientich.main()
+
 elif menu =="Giới thiệu về lớp học":
     st.subheader("📚 Trang web đang được hoàn thiện")
     st.write("Mình là Nguyễn Huy Phúc")
