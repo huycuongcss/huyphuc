@@ -1,11 +1,8 @@
 import streamlit as st
 
 def main():
-
-st.title("🎵 GÓC THƯ GIÃN")
-
+st.title("🎵 GÓC THƯ GIÃN ĐỂ HỌC TẬP TỐT HƠN")
 st.write("Chọn một nội dung để nghe nhạc:")
-
 st.markdown(
     """
     <a href="https://www.youtube.com" target="_blank">
