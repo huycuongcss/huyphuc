@@ -60,4 +60,5 @@ elif menu =="🚗 Vật lý":
 elif menu =="✈ Giới thiệu về lớp họcc":
     st.subheader("📚 Trang web đang được hoàn thiện")
     st.write("Mình là Nguyễn Huy Phúc")
-st.write("bản quyền thuộc về huyphuc-7a17")
+st.markdown("---")
+st.caption("🚨 Bản quyền: Huy Phúc")
