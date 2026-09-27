@@ -5,6 +5,7 @@ import chim
 import dientich
 import thoikhoabieu
 import thugian
+import vatly
 
 st.set_page_config(
     page_title="Trang chủ",
@@ -19,6 +20,7 @@ menu = st.sidebar.selectbox(
     [
         "📅 Thời khóa biểu",
         "📐 Tính diện tích",
+        "🚗 Vật lý",
         "🎮 Giải trí",
         "🎵 Thư giãn",
         "✈ Giới thiệu về lớp học"
@@ -53,6 +55,9 @@ elif menu == "📐 Tính diện tích":
     dientich.main()
 elif menu =="🎵 Thư giãn":
     thugian.main()
+elif menu =="🚗 Vật lý":
+    vatly.main()
 elif menu =="✈ Giới thiệu về lớp họcc":
     st.subheader("📚 Trang web đang được hoàn thiện")
     st.write("Mình là Nguyễn Huy Phúc")
+st.write("bản quyền thuộc về huyphuc-7a17")
