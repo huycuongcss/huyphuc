@@ -1,7 +1,7 @@
 import streamlit as st
 
 def main():
-    st.title("🎵 GÓC THƯ GIÃN ĐỂ HỌC TẬP TỐT HƠN")
+    st.title("🎵 GÓC THƯ GIÃN")
     st.write("Chọn một nội dung để nghe nhạc:")
 
     st.link_button(
